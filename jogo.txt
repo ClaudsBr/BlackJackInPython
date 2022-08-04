@@ -1,0 +1,25 @@
+Pontuação
+
+- cada carta numerica vale o proprio numero
+- o as pode valer 1 ou 11 
+- dama, valete, rei e 10 valem 10
+
+Jogadas
+
+stop (parar)
+hit (pedir mais uma carta)
+surrender (rendição)
+
+Dinamica do Jogo
+
+recebe duas cartas aleatorias
+objetivo de se aproximar de 21
+blackjack é uma carta de 10 + As
+
+
+classe baralho
+
+cartas
+
+
+
