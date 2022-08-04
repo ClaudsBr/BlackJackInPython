@@ -1,6 +1,6 @@
 import random
-from itertools import cycle
 from player import Player
+
 
 class Baralho():
 
@@ -16,7 +16,7 @@ class Baralho():
         self.embaralha()
         self.__index_generator__ = 0
 
-    def dar_cartas(self, jogador=Player()):
+    def dar_as_cartas(self, jogador=Player()):
         for i in range(2):
             carta = self.cartas[self.__index_generator__]
             carta['jogador'] = jogador.name
@@ -33,6 +33,8 @@ class Baralho():
 
     def embaralha(self):
         return random.shuffle(self.cartas)
+
+
 
 
 

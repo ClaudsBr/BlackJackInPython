@@ -159,7 +159,7 @@ jogador1 = Player()
 jogador2 = Player("Rivaldo")
 
 print("Testando os nomes dos jogadores ",jogador1.name, " e ", jogador2.name)
-print(f'Cartas {jogador1.name}\n{baralho.dar_cartas(jogador1)}\nCartas {jogador2.name}\n{baralho.dar_cartas(jogador2)}')
+print(f'Cartas {jogador1.name}\n{baralho.dar_as_cartas(jogador1)}\nCartas {jogador2.name}\n{baralho.dar_cartas(jogador2)}')
 print()
 print(baralho.cartas)
 print(f"Jogador {jogador2.name} pedindo uma carta")
