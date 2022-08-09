@@ -23,21 +23,22 @@ def test_somar_pontos_figuras():
 def test_soma_pontos_com_as_igual_a_onze():
     cartas = [
         {"naipe": "Ouros", "numero": 1, "jogador": None},
-        {"naipe": "Copas", "numero": 9, "jogador": None}
-    ]
-    baralho = Baralho()
-    pontos = baralho.somar_pontos(cartas)
-    assert pontos == 20
-
-def test_soma_pontos_com_as_igual_a_um():
-    cartas = [
-        {"naipe": "Ouros", "numero": 9, "jogador": None},
-        {"naipe": "Ouros", "numero": 1, "jogador": None},
-        {"naipe": "Copas", "numero": 1, "jogador": None}
+        {"naipe": "Copas", "numero": "Rei", "jogador": None}
     ]
     baralho = Baralho()
     pontos = baralho.somar_pontos(cartas)
     assert pontos == 21
+
+def test_soma_pontos_com_as_igual_a_um():
+    cartas = [
+        {"naipe": "Ouros", "numero": 8, "jogador": None},
+        {"naipe": "Ouros", "numero": 1, "jogador": None},
+        {"naipe": "Espadas", "numero": "Rei", "jogador": None}
+
+    ]
+    baralho = Baralho()
+    pontos = baralho.somar_pontos(cartas)
+    assert pontos == 19
 
 
 test_somar_pontos_numeros()

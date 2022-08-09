@@ -44,14 +44,19 @@ class Baralho():
 
     def somar_pontos(self, cartas):
         soma = 0
+        valores = []
         for carta in cartas:
             if isinstance(carta['numero'], str):
                 soma += 10
+                valores.append(carta['numero'])
             else:
-                if carta['numero'] == 1:
-                    soma += 11
-                    if soma > 21:
-                        soma -= 10
-                else:
-                    soma += carta['numero']
+                soma += carta['numero']
+                valores.append(carta['numero'])
+
+        if 1 in valores:
+            if "Rei" or "Dama" or "Valete" in valores:
+                soma += 10
+                if soma > 21:
+                    soma -= 10
+
         return soma
