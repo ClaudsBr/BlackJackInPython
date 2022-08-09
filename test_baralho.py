@@ -31,13 +31,13 @@ def test_soma_pontos_com_as_igual_a_onze():
 
 def test_soma_pontos_com_as_igual_a_um():
     cartas = [
-        {"naipe": "Ouros", "numero": 10, "jogador": None},
-        {"naipe": "Ouros", "numero": "Rei", "jogador": None},
+        {"naipe": "Ouros", "numero": 9, "jogador": None},
+        {"naipe": "Ouros", "numero": 1, "jogador": None},
         {"naipe": "Copas", "numero": 1, "jogador": None}
     ]
     baralho = Baralho()
     pontos = baralho.somar_pontos(cartas)
-    print(pontos)
+    assert pontos == 21
 
 
 test_somar_pontos_numeros()

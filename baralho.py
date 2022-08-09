@@ -50,6 +50,8 @@ class Baralho():
             else:
                 if carta['numero'] == 1:
                     soma += 11
+                    if soma > 21:
+                        soma -= 10
                 else:
                     soma += carta['numero']
         return soma
