@@ -48,10 +48,9 @@ class Baralho():
         for carta in cartas:
             if isinstance(carta['numero'], str):
                 soma += 10
-                valores.append(carta['numero'])
             else:
                 soma += carta['numero']
-                valores.append(carta['numero'])
+            valores.append(carta['numero'])
 
         if 1 in valores:
             if "Rei" or "Dama" or "Valete" in valores:
