@@ -53,7 +53,7 @@ class Baralho():
             valores.append(carta['numero'])
 
         if 1 in valores:
-            if "Rei" or "Dama" or "Valete" in valores:
+            if ("Rei" in valores) or ("Dama" in valores) or ("Valete" in valores):
                 soma += 10
                 if soma > 21:
                     soma -= 10
