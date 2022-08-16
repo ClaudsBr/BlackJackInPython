@@ -14,6 +14,7 @@ class Baralho():
                     "jogador": None
                 }
                 self.cartas.append(carta)
+
             for numero in ["Dama", "Valete", "Rei"]:
                 carta = {
                     "naipe": naipe,
@@ -22,21 +23,21 @@ class Baralho():
                 }
                 self.cartas.append(carta)
         self.embaralha()
-        self.__index_generator__ = 0
+        self.__index_generator = 0
 
-    def dar_as_cartas(self, jogador=Player()):
+    def dar_as_cartas(self, jogador: Player):
         for i in range(2):
-            carta = self.cartas[self.__index_generator__]
+            carta = self.cartas[self.__index_generator]
             carta['jogador'] = jogador.name
             jogador.cards.append(carta)
-            self.__index_generator__ += 1
+            self.__index_generator += 1
         return jogador.cards
 
-    def pedir_carta(self, jogador=Player()):
-        carta = self.cartas[self.__index_generator__]
+    def pedir_carta(self, jogador: Player):
+        carta = self.cartas[self.__index_generator]
         carta['jogador'] = jogador.name
         jogador.cards.append(carta)
-        self.__index_generator__ += 1
+        self.__index_generator += 1
         return carta
 
     def embaralha(self):

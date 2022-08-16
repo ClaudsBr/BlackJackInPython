@@ -33,9 +33,36 @@ def test_somar_pontos_com_as():
     pontos = baralho.somar_pontos(cartas)
     assert pontos == 20
 
+def test_somar_pontos_21_valete():
+    cartas = [
 
-test_somar_pontos_numeros()
+        {"naipe": "Ouros", "numero": 1, "jogador": None},
+        {"naipe": "Espadas", "numero": "Valete", "jogador": None},
 
-test_somar_pontos_figuras()
+    ]
+    baralho = Baralho()
+    pontos = baralho.somar_pontos(cartas)
+    assert pontos == 21
 
-test_somar_pontos_com_as()
+
+def test_somar_pontos_21_rei():
+    cartas = [
+
+        {"naipe": "Ouros", "numero": 1, "jogador": None},
+        {"naipe": "Espadas", "numero": "Rei", "jogador": None},
+
+    ]
+    baralho = Baralho()
+    pontos = baralho.somar_pontos(cartas)
+    assert pontos == 21
+
+def test_somar_pontos_21_dama():
+    cartas = [
+
+        {"naipe": "Ouros", "numero": 1, "jogador": None},
+        {"naipe": "Espadas", "numero": "Dama", "jogador": None},
+
+    ]
+    baralho = Baralho()
+    pontos = baralho.somar_pontos(cartas)
+    assert pontos == 21
