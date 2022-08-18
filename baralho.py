@@ -47,16 +47,23 @@ class Baralho():
         soma = 0
         valores = []
         for carta in cartas:
-            if isinstance(carta['numero'], str):
+            if (carta["numero"] == "Rei") \
+                    or (carta["numero"] == "Dama") \
+                    or (carta["numero"] == "Valete"):
                 soma += 10
+                valores.append(carta["numero"])
             else:
-                soma += carta['numero']
-            valores.append(carta['numero'])
+                soma += int(carta['numero'])
+                valores.append(int(carta['numero']))
 
         if 1 in valores:
-            if ("Rei" in valores) or ("Dama" in valores) or ("Valete" in valores):
+            if ("Rei" in valores) \
+                    or ("Dama" in valores) \
+                    or ("Valete" in valores):
                 soma += 10
                 if soma > 21:
                     soma -= 10
+
+        print(valores)
 
         return soma
