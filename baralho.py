@@ -64,6 +64,4 @@ class Baralho():
                 if soma > 21:
                     soma -= 10
 
-        print(valores)
-
         return soma
