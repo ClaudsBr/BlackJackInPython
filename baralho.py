@@ -1,17 +1,20 @@
 import random
 from player import Player
+from uuid import uuid4
 
 
 class Baralho():
 
     def __init__(self):
+
         self.cartas = []
         for naipe in ["Paus", "Copas", "Espadas", "Ouros"]:
             for numero in range(1, 11):
                 carta = {
                     "naipe": naipe,
                     "numero": str(numero),
-                    "jogador": None
+                    "jogador": None,
+                    "id": str(uuid4())
                 }
                 self.cartas.append(carta)
 
@@ -19,19 +22,16 @@ class Baralho():
                 carta = {
                     "naipe": naipe,
                     "numero": numero,
-                    "jogador": None
+                    "jogador": None,
+                    "id": str(uuid4())
                 }
                 self.cartas.append(carta)
         self.embaralha()
         self.__index_generator = 0
 
     def dar_as_cartas(self, jogador: Player):
-        for i in range(2):
-            carta = self.cartas[self.__index_generator]
-            carta['jogador'] = jogador.name
-            jogador.cards.append(carta)
-            self.__index_generator += 1
-        return jogador.cards
+
+        return [self.pedir_carta(jogador), self.pedir_carta(jogador)]
 
     def pedir_carta(self, jogador: Player):
         carta = self.cartas[self.__index_generator]
