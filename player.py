@@ -6,8 +6,3 @@ class Player:
         self.name = name
         self.balance = 3000
         self.cards = []
-
-
-
-
-

@@ -1,0 +1,8 @@
+.pytest_cache/*
+__pycache__/*
+htmlcov/*
+.coverage
+.mutmut-cache
+.mutmut-cache-journal
+html/*
+
