@@ -65,3 +65,5 @@ class Baralho():
                     soma -= 10
 
         return soma
+
+

@@ -219,3 +219,4 @@ class TestBaralho(unittest.TestCase):
         jogador = Player()
         resposta = self.baralho.pedir_carta(jogador)
         print(resposta)
+
