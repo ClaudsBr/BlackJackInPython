@@ -44,7 +44,6 @@ class Jogo:
         self.baralho.pedir_carta(jogador)
         jogador.values = self.baralho.somar_pontos(jogador.cards)
 
-
     def definir_jogadores(self):
         # Define o numero de participantes do jogo alem do dealer
         numero_jogadores = int(input("Digite a quantidade de jogadores da partida\n"))
@@ -63,8 +62,8 @@ class Jogo:
 
     def hit_ou_stand(self):
         # Pergunta se o jogador vai permanecer com as mesmas cartas ou pedir um outra carta
-        self.jogando = True
-        while self.jogando:
+
+        while True:
             pergunta = input("Digite H para dar HIT ou S para STAND\n")
 
             if pergunta[0].lower() == 'h':
@@ -72,11 +71,11 @@ class Jogo:
                 self.mostrar_cartas_do_jogador()
             elif pergunta[0].lower() == 's':
                 print("Você optou por permanecer com as mesmas cartas")
-                self.jogando = False
+                break
             else:
                 print("Comando inválido, tente novamente")
                 continue
-            break
+
 
     def mostrar_todas_as_cartas(self):
         for jogador in self.jogadores:
@@ -104,7 +103,6 @@ class Jogo:
 
     def jogar(self):
         print("Bem vindo ao BlackJack!")
-        self.jogar = True
         self.definir_jogadores()
         self.definir_as_cartas_do_jogo()
         self.apostar()

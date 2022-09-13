@@ -220,3 +220,14 @@ class TestBaralho(unittest.TestCase):
         resposta = self.baralho.pedir_carta(jogador)
         print(resposta)
 
+
+def test_somar_pontos_21_rei():
+     cartas = [
+         {"naipe": "Ouros", "numero": "1", "jogador": None,
+         "id": "32601ad5-a8c4-462e-811f-eed2914f105f"},
+        {"naipe": "Copas", "numero": "Rei", "jogador": None,
+         "id": "3fa5abe8-e948-42ee-a2c8-d72235a5df8f"},
+     ]
+     baralho = Baralho()
+     pontos = baralho.somar_pontos(cartas)
+     print(pontos)

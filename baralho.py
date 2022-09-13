@@ -51,7 +51,8 @@ class Baralho():
                     or (carta["numero"] == "Dama") \
                     or (carta["numero"] == "Valete"):
                 soma += 10
-                valores.append(carta["numero"])
+                valores.append(carta['numero'])
+
             else:
                 soma += int(carta['numero'])
                 valores.append(int(carta['numero']))
