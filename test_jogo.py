@@ -14,7 +14,7 @@ class TestJogo(unittest.TestCase):
         self.jogador = Player()
 
     def test_pedindo_carta(self):
-        carta = self.baralho.pedir_carta(self.jogador)
+        self.baralho.pedir_carta(self.jogador)
         esperado = 1
         resultado = len(self.jogador.cards)
         self.assertEqual(resultado, esperado)
