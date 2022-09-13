@@ -26,11 +26,9 @@ class TestJogo(unittest.TestCase):
         self.assertEqual(resultado, esperado)
         print(self.jogador.cards)
 
-    def test_definir_numero_de_jogadores(self):
-        jogador = Player("Clemente Raul")
-        dealer = Dealer()
-        jogadores = [dealer, jogador]
-        esperado = len(jogadores)
+    def test_numero_de_jogadores_igual_a_3(self):
+        numero_de_jogadores = 3
+        esperado = numero_de_jogadores + 1
         self.jogo.definir_jogadores()
         resultado = len(self.jogo.jogadores)
         self.assertEqual(esperado, resultado)
