@@ -10,9 +10,20 @@ class Player:
         self.values = 0
 
     def player_win(self, bet):
-        self.balance += bet
         return f"Você ganhou {bet}"
+        self.balance += bet
 
     def player_lose(self, bet):
-        self.balance -= bet
         return f'Você perdeu {bet}'
+        self.balance -= bet
+
+
+
+
+    def __str__(self):
+        string_de_retorno = f"Jogador: {self.name}\n"
+        for carta in self.cards:
+            string_de_retorno += f'{carta}\n'
+        string_de_retorno += f'Mão: {self.values}\nSaldo: {self.balance}'
+        return string_de_retorno
+
