@@ -1,4 +1,8 @@
+from random import random
+
 from faker import Faker
+
+
 
 
 class Player:
@@ -10,15 +14,10 @@ class Player:
         self.values = 0
 
     def player_win(self, bet):
-        return f"Você ganhou {bet}"
         self.balance += bet
 
     def player_lose(self, bet):
-        return f'Você perdeu {bet}'
         self.balance -= bet
-
-
-
 
     def __str__(self):
         string_de_retorno = f"Jogador: {self.name}\n"
