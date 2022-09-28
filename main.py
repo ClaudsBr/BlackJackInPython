@@ -1,6 +1,6 @@
 import time
 from baralho import Baralho
-from player import Player
+from jogador import Player
 from test_baralho import test_somar_pontos_21_rei
 import random
 import itertools

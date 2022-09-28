@@ -1,11 +1,13 @@
 import itertools
 import random
+from time import sleep
+import emoji
 
 from faker import Faker
 from baralho import Baralho
-from dealer import Dealer
-from player import Player
-
+from negociante import Negociante
+from jogador import Jogador
+from jogador_ia import JogadorIA
 
 jogar = True
 class Jogo:
@@ -15,159 +17,196 @@ class Jogo:
         self.baralho = Baralho()
         self.ganhadores = []
         self.perdedores = []
+        self.empatados = []
+        self.aposta = {}
 
-    def apostar(self):
-        while True:
-            try:
-                self.aposta = int(input("Digite o valor da sua aposta\n"))
-            except ValueError:
-                print("Valor não aceito")
-            else:
-                if self.jogadores[1].balance < self.aposta:
-                    print("Saldo Insuficiente")
-                else:
-                    break
+    def apostar(self, jogador: Jogador):
+        self.aposta[jogador.id] = jogador.apostando()
 
-    '''def apostar(self):
-        apostas = itertools.cycle(self.jogadores)
-        for aposta in apostas:
-            self.aposta = aposta
-        print(f"O valor de aposta da rodada é: {self.aposta}")'''
-
-    def vencedor(self):
+    def definir_vencedor(self):
         partida = []
-        maior_pontuacao = 0
+        negociante = self.jogadores.pop()
 
         for jogador in self.jogadores:
             vencedor = {}
             vencedor["jogador"] = jogador
-            vencedor["pontuacao"] = jogador.values
+            vencedor["pontuacao"] = jogador.valores
             partida.append(vencedor)
 
         for jogador in partida:
-            if (jogador['pontuacao'] < 22):
-                if(jogador['pontuacao'] >= maior_pontuacao):
-                    maior_pontuacao = jogador['pontuacao']
+            if (jogador['pontuacao'] <= 21):
+                if(jogador['pontuacao'] > negociante.valores):
+                    jogador['jogador'].jogador_ganha(jogador['jogador'].aposta)
+                    negociante.saldo -= jogador['jogador'].aposta
+                    self.ganhadores.append(jogador['jogador'])
+                elif(negociante.valores > 21):
+                    jogador['jogador'].jogador_ganha(jogador['jogador'].aposta)
+                    self.ganhadores.append(jogador['jogador'])
+                elif(jogador['pontuacao'] == negociante.valores):
+                    jogador['jogador'].saldo += jogador['jogador'].aposta
+                    self.empatados.append(jogador['jogador'])
+                else:
+                    self.perdedores.append(jogador['jogador'])
 
-        for jogador in partida:
-            if jogador['pontuacao'] == maior_pontuacao:
-                self.ganhadores.append(jogador)
-
-
-        print("Ganhador da rodada:")
-        for ganhador in self.ganhadores:
-            ganhador['jogador'].balance += self.aposta
-            print(ganhador['jogador'].name)
-
-
-        for jogador in partida:
-            if jogador['pontuacao'] != maior_pontuacao:
-                self.perdedores.append(jogador)
-
-        for perdedor in self.perdedores:
-            perdedor['jogador'].balance -= self.aposta
-
+        self.mostrar_ganhadores()
+        self.mostrar_perdedores()
+        self.mostrar_empatados()
         self.saldo()
 
+    def mostrar_ganhadores(self):
+        print("Ganhador(es) da rodada:")
+        for ganhador in self.ganhadores:
+            print(ganhador.nome)
+        print()
+
+    def mostrar_perdedores(self):
+        print("Perdedor(es) da Rodada:")
+        for perdedor in self.perdedores:
+            if perdedor.nome == "Dealer":
+                break
+            print(perdedor.nome)
+        print()
+
+    def mostrar_empatados(self):
+        if len(self.empatados) == 0:
+            print("Ninguém empatou com o Dealer")
+        else:
+            print('Empataram com o Dealer:')
+            for jogador in self.empatados:
+                print(jogador.nome)
+        print()
+
+
     def saldo(self):
+        print("Saldo dos participantes")
         for jogador in self.jogadores:
-            print("Saldodos participantes")
-            print(jogador.name, jogador.balance)
+            print(jogador.nome, jogador.saldo)
 
-    def pedir_carta(self, jogador: Player):
+    def pedir_carta(self, jogador: Jogador):
         self.baralho.pedir_carta(jogador)
-        jogador.values = self.baralho.somar_pontos(jogador.cards)
+        jogador.valores = self.baralho.somar_pontos(jogador.cartas)
 
-    def definir_jogadores(self):
+    @staticmethod
+    def definir_jogadores(jogadores_reais, numero_jogadores_artificiais):
         # Define o numero de participantes do jogo alem do dealer
-        numero_jogadores = int(input("Digite a quantidade de jogadores da partida\n"))
-        nome = input("Digite seu nome:\n")
-        jogador = Player(nome)
-        dealer = Dealer()
-        self.jogadores = [dealer, jogador]
-        for i in range(numero_jogadores-1):
-            jogador = Player(name=Faker().name())
-            self.jogadores.append(jogador)
+        jogadores = []
+        for nome in jogadores_reais:
+            jogadores.append(Jogador(nome))
+
+        for i in range(numero_jogadores_artificiais):
+            jogador_artificial = JogadorIA()
+            jogadores.append(jogador_artificial)
+
+        negociante = Negociante()
+        jogadores.append(negociante)
+        return jogadores
 
     def definir_as_cartas_do_jogo(self):
+
         for jogador in self.jogadores:
             self.baralho.dar_as_cartas(jogador)
 
-    def hit_ou_stand(self):
+    def pedir_ou_manter(self, jogador: Jogador):
         # Pergunta se o jogador vai permanecer com as mesmas cartas ou pedir um outra carta
-
         while True:
+            pergunta = jogador.jogando()
 
-            pergunta = input("Digite H para dar HIT ou S para STAND\n")
+            if pergunta == 'p':
 
-            if pergunta[0].lower() == 'h':
-                self.pedir_carta(self.jogadores[1])
-                if self.jogadores[1].values > 21:
-                    print(f"VOCÊ PERDEU {self.aposta}!\nSua Pontuação: {self.jogadores[1].values} pontos\nSeu saldo Atual é {self.jogadores[1].balance}")
+                self.pedir_carta(jogador)
+                sleep(0.5)
+                self.mostrar_cartas_do_jogador(jogador)
+                if jogador.valores > 21:
+                    self.perdedores.append(jogador)
+                    print(f"{jogador.nome} ESTOUROU e PERDEU {self.aposta[jogador.id]}!\nPontuação: {jogador.valores} pontos\n"
+                          f"Saldo Atual: {jogador.saldo}")
                     break
-                self.mostrar_cartas_do_jogador()
-            elif pergunta[0].lower() == 's':
-                print("Você optou por permanecer com as mesmas cartas")
+
+            elif pergunta == 'm':
+                sleep(0.5)
+                print(f"O jogador {jogador.nome} optou por permanecer com essas cartas")
+                sleep(1)
                 break
             else:
+                sleep(0.5)
                 print("Comando inválido, tente novamente")
                 continue
 
-
     def mostrar_todas_as_cartas(self):
+        sleep(1)
+        print("--- RESULTADO FINAL ----")
         for jogador in self.jogadores:
-            print("Jogador:", jogador.name)
+            print("Jogador:", jogador.nome)
             print("Cartas:")
-            for carta in jogador.cards:
-                print(carta)
-            print(f'Pontuação: {jogador.values}')
+            print("---------------")
+            for carta in jogador.cartas:
+                print(f"{carta['numero']} {carta['naipe']}")
+                sleep(0.3)
+            print("---------------")
+            print(f'Pontuação: {jogador.valores}')
+            sleep(0.5)
             print()
 
-    def mostrar_cartas_do_jogador(self):
-        print("Jogador:", self.jogadores[1].name)
+    def mostrar_cartas_do_jogador(self, jogador: Jogador):
+        print("Jogador:", jogador.nome)
         print("Cartas:")
-        for carta in self.jogadores[1].cards:
-            print(carta)
+        print('-------------------')
+        for carta in jogador.cartas:
+            print(f"{carta['numero']} {carta['naipe']}")
+            sleep(0.5)
+        print('-------------------')
+        self.calcular_pontuacao(jogador)
+        print(f'Pontuação: {jogador.valores}')
+        sleep(0.3)
 
-    def calcular_pontuacao(self):
-        for jogador in self.jogadores:
-            jogador.values = self.baralho.somar_pontos(jogador.cards)
-            if self.jogadores[0].values < 17:
-                self.pedir_carta(self.jogadores[0])
+    def calcular_pontuacao(self, jogador: Jogador):
+        jogador.valores = self.baralho.somar_pontos(jogador.cartas)
 
-            '''if self.jogadores[0].values > 21:
-                self.jogadores[0].dealer_lose(self.aposta)'''
+    def nova_rodada(self):
+        while True:
+            pergunta = input("Deseja continuar? S/N")
+            if pergunta[0].lower() == 's':
+                for jogador in self.jogadores:
+                    jogador.cards.clear()
+                    self.ganhadores.clear()
+                    self.perdedores.clear()
+                self.baralho.embaralha()
+                self.baralho.__index_generator = 0
+                self.definir_as_cartas_do_jogo()
+                for jogador in self.jogadores:
+                    self.apostar()
+                    self.mostrar_cartas_do_jogador()
+                    self.calcular_pontuacao()
+                    self.hit_ou_stand(jogador)
+                self.mostrar_todas_as_cartas()
+                self.vencedor()
 
-        for jogador in self.jogadores[2:]:
-            valores = [15,16,17,18]
-            escolha = random.choice(valores)
-            if jogador.values < escolha:
-                self.pedir_carta(jogador)
-                if jogador.values < escolha:
-                    self.pedir_carta(jogador)
+            elif pergunta[0].lower() == 'n':
+                print("FIM DO JOGO")
+                self.saldo()
+                break
+            else:
+                print("resposta incorreta, digite S para continuar ou N para sair do jogo")
+                continue
 
-            '''if jogador.values > 21:
-                jogador.player_lose(self.aposta)'''
-
-
-    def jogador_perde(self):
-        self.jogadores[1].player_lose(self.aposta)
-        print(f"Você perdeu {self.aposta}\nSeu saldo atual é {self.jogadores[1].balance}")
-
-    def jogador_ganha(self):
-        self.jogadores[1].player_win(self.aposta)
-        print(f"Parabéns!\nVocê ganhou {self.aposta}\nSeu saldo atual é {self.jogadores[1].balance}")
     def jogar(self):
-        print("Bem vindo ao BlackJack!")
-        self.definir_jogadores()
+
+        print(emoji.emojize(":club_suit::heart_suit:Bem-vindo ao BlackJack!  :spade_suit::diamond_suit:"))
+        jogadores_reais = int(input("Digite a quantidade de pessoas da partida\n"))
+        lista_jogadores = [input("Digite seu nome:\n") for i in range(jogadores_reais)]
+        numero_jogadores_artificiais = int(input("Digite a quantidade de jogadores artificiais da partida\n"))
+        self.jogadores = self.definir_jogadores(lista_jogadores, numero_jogadores_artificiais)
         self.definir_as_cartas_do_jogo()
-        self.apostar()
-        self.mostrar_cartas_do_jogador()
-        self.calcular_pontuacao()
-        self.hit_ou_stand()
+        for jogador in self.jogadores:
+            self.apostar(jogador)
+            self.mostrar_cartas_do_jogador(jogador)
+            self.calcular_pontuacao(jogador)
+            self.pedir_ou_manter(jogador)
         self.mostrar_todas_as_cartas()
-        self.vencedor()
+        self.definir_vencedor()
+        '''self.nova_rodada()'''
 
+if __name__ == "__main__":
+    jogo = Jogo()
+    jogo.jogar()
 
-jogo = Jogo()
-jogo.jogar()

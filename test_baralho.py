@@ -1,5 +1,5 @@
 from baralho import Baralho
-from player import Player
+from jogador import Player
 import unittest
 from unittest.mock import patch, MagicMock
 import random
