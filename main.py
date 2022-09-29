@@ -1,7 +1,7 @@
 import time
 from baralho import Baralho
-from jogador import Player
-from test_baralho import test_somar_pontos_21_rei
+from jogador import Jogador
+
 import random
 import itertools
 
@@ -26,11 +26,15 @@ except ZeroDivisionError:
 else:
     print("Else")
 finally:
-    print("Finalmente")'''
+    print("Finalmente")
 
 lista = [1,2,3,4]
 buffer = itertools.cycle(lista)
 for i in buffer:
-    print(i)
+    print(i)'''
+
+
+
+
 
 
