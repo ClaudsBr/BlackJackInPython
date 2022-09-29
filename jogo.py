@@ -22,6 +22,7 @@ class Jogo:
 
     def apostar(self, jogador: Jogador):
         self.aposta[jogador.id] = jogador.apostando()
+        self.jogadores[-1].saldo += jogador.aposta
 
     def definir_vencedor(self):
         partida = []
@@ -37,17 +38,18 @@ class Jogo:
             if (jogador['pontuacao'] <= 21):
                 if(jogador['pontuacao'] > negociante.pontuacao):
                     jogador['jogador'].jogador_ganha(jogador['jogador'].aposta)
-                    negociante.saldo -= jogador['jogador'].aposta
+                    negociante.saldo -= 2* jogador['jogador'].aposta
                     self.ganhadores.append(jogador['jogador'])
-                elif(negociante.valores > 21):
+                elif(negociante.pontuacao > 21):
                     jogador['jogador'].jogador_ganha(jogador['jogador'].aposta)
                     self.ganhadores.append(jogador['jogador'])
+                    negociante.saldo -= 2* jogador['jogador'].aposta
                 elif(jogador['pontuacao'] == negociante.pontuacao):
                     jogador['jogador'].saldo += jogador['jogador'].aposta
                     self.empatados.append(jogador['jogador'])
                 else:
                     self.perdedores.append(jogador['jogador'])
-
+        self.jogadores.append(negociante)
         self.mostrar_ganhadores()
         self.mostrar_perdedores()
         self.mostrar_empatados()
@@ -163,23 +165,31 @@ class Jogo:
         jogador.pontuacao = self.baralho.somar_pontos(jogador.cartas)
 
     def nova_rodada(self):
+        '''self.ganhadores.clear()
+        self.perdedores.clear()
+        self.empatados.clear()
+        for jogador in self.jogadores:
+            jogador.cartas.clear()
+        self.baralho.embaralha()'''
+
         while True:
+            self.ganhadores.clear()
+            self.perdedores.clear()
+            self.empatados.clear()
+            for jogador in self.jogadores:
+                jogador.cartas.clear()
+            self.baralho.embaralha()
             pergunta = input("Deseja continuar? S/N")
+
             if pergunta[0].lower() == 's':
-                for jogador in self.jogadores:
-                    jogador.cards.clear()
-                    self.ganhadores.clear()
-                    self.perdedores.clear()
-                self.baralho.embaralha()
-                self.baralho.__index_generator = 0
                 self.definir_as_cartas_do_jogo()
                 for jogador in self.jogadores:
-                    self.apostar()
-                    self.mostrar_cartas_do_jogador()
-                    self.calcular_pontuacao()
-                    self.hit_ou_stand(jogador)
+                    self.apostar(jogador)
+                    self.mostrar_cartas_do_jogador(jogador)
+                    self.calcular_pontuacao(jogador)
+                    self.pedir_ou_manter(jogador)
                 self.mostrar_todas_as_cartas()
-                self.vencedor()
+                self.definir_vencedor()
 
             elif pergunta[0].lower() == 'n':
                 print("FIM DO JOGO")
@@ -200,7 +210,7 @@ class Jogo:
             self.pedir_ou_manter(jogador)
         self.mostrar_todas_as_cartas()
         self.definir_vencedor()
-        '''self.nova_rodada()'''
+        self.nova_rodada()
 
     def introducao(self):
         print(emoji.emojize(":club_suit::heart_suit:Bem-vindo ao BlackJack!  :spade_suit::diamond_suit:"))
