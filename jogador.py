@@ -11,7 +11,7 @@ class Jogador:
         self.saldo = SALDO_INICIAL_JOGADOR
         self.cartas = []
         self.aposta = 0
-        self.valores = 0
+        self.pontuacao = 0
         self.id = str(uuid4())
 
     def jogador_ganha(self, aposta):
@@ -21,7 +21,7 @@ class Jogador:
         string_de_retorno = f"Jogador: {self.nome}\n"
         for carta in self.cartas:
             string_de_retorno += f'{carta}\n'
-        string_de_retorno += f'Mão: {self.valores}\nSaldo: {self.saldo}'
+        string_de_retorno += f'Mão: {self.pontuacao}\nSaldo: {self.saldo}'
         return string_de_retorno
 
     def jogando(self):

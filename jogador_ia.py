@@ -6,7 +6,7 @@ class JogadorIA(Jogador):
 
     def __init__(self, ):
         super().__init__(nome=Faker().name())
-        self.bias = random.choice([1, 2, 3])
+        self.tendencia = random.choice([1, 2, 3])
 
     def apostando(self):
         valores_aposta = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
@@ -16,7 +16,7 @@ class JogadorIA(Jogador):
         return aposta
 
     def jogando(self):
-        if self.valores < 15 + self.bias:
+        if self.pontuacao < 15 + self.tendencia:
             return 'p'
         else:
             return 'm'

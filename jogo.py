@@ -30,19 +30,19 @@ class Jogo:
         for jogador in self.jogadores:
             vencedor = {}
             vencedor["jogador"] = jogador
-            vencedor["pontuacao"] = jogador.valores
+            vencedor["pontuacao"] = jogador.pontuacao
             partida.append(vencedor)
 
         for jogador in partida:
             if (jogador['pontuacao'] <= 21):
-                if(jogador['pontuacao'] > negociante.valores):
+                if(jogador['pontuacao'] > negociante.pontuacao):
                     jogador['jogador'].jogador_ganha(jogador['jogador'].aposta)
                     negociante.saldo -= jogador['jogador'].aposta
                     self.ganhadores.append(jogador['jogador'])
                 elif(negociante.valores > 21):
                     jogador['jogador'].jogador_ganha(jogador['jogador'].aposta)
                     self.ganhadores.append(jogador['jogador'])
-                elif(jogador['pontuacao'] == negociante.valores):
+                elif(jogador['pontuacao'] == negociante.pontuacao):
                     jogador['jogador'].saldo += jogador['jogador'].aposta
                     self.empatados.append(jogador['jogador'])
                 else:
@@ -116,9 +116,9 @@ class Jogo:
                 self.pedir_carta(jogador)
                 sleep(0.5)
                 self.mostrar_cartas_do_jogador(jogador)
-                if jogador.valores > 21:
+                if jogador.pontuacao > 21:
                     self.perdedores.append(jogador)
-                    print(f"{jogador.nome} ESTOUROU e PERDEU {self.aposta[jogador.id]}!\nPontuação: {jogador.valores} pontos\n"
+                    print(f"{jogador.nome} ESTOUROU e PERDEU {self.aposta[jogador.id]}!\nPontuação: {jogador.pontuacao} pontos\n"
                           f"Saldo Atual: {jogador.saldo}")
                     break
 
@@ -143,7 +143,7 @@ class Jogo:
                 print(f"{carta['numero']} {carta['naipe']}")
                 sleep(0.3)
             print("---------------")
-            print(f'Pontuação: {jogador.valores}')
+            print(f'Pontuação: {jogador.pontuacao}')
             sleep(0.5)
             print()
 
@@ -156,11 +156,11 @@ class Jogo:
             sleep(0.5)
         print('-------------------')
         self.calcular_pontuacao(jogador)
-        print(f'Pontuação: {jogador.valores}')
+        print(f'Pontuação: {jogador.pontuacao}')
         sleep(0.3)
 
     def calcular_pontuacao(self, jogador: Jogador):
-        jogador.valores = self.baralho.somar_pontos(jogador.cartas)
+        jogador.pontuacao = self.baralho.somar_pontos(jogador.cartas)
 
     def nova_rodada(self):
         while True:
@@ -191,11 +191,7 @@ class Jogo:
 
     def jogar(self):
 
-        print(emoji.emojize(":club_suit::heart_suit:Bem-vindo ao BlackJack!  :spade_suit::diamond_suit:"))
-        jogadores_reais = int(input("Digite a quantidade de pessoas da partida\n"))
-        lista_jogadores = [input("Digite seu nome:\n") for i in range(jogadores_reais)]
-        numero_jogadores_artificiais = int(input("Digite a quantidade de jogadores artificiais da partida\n"))
-        self.jogadores = self.definir_jogadores(lista_jogadores, numero_jogadores_artificiais)
+        self.introducao()
         self.definir_as_cartas_do_jogo()
         for jogador in self.jogadores:
             self.apostar(jogador)
@@ -206,7 +202,28 @@ class Jogo:
         self.definir_vencedor()
         '''self.nova_rodada()'''
 
+    def introducao(self):
+        print(emoji.emojize(":club_suit::heart_suit:Bem-vindo ao BlackJack!  :spade_suit::diamond_suit:"))
+
+        while True:
+            jogadores_reais = int(input("Digite a quantidade de pessoas da partida (Máximo 8 jogadores)\n"))
+            if jogadores_reais <= 8:
+                lista_jogadores = [input("Digite seu nome:\n") for i in range(jogadores_reais)]
+                break
+            else:
+                print("Quantidade de Jogadores Inválida! O limite é de 8 jogadores\nTente Novamente!")
+                continue
+
+        while True:
+            numero_jogadores_artificiais = int(input("Digite a quantidade de jogadores artificiais da partida\n"))
+            if numero_jogadores_artificiais + jogadores_reais <= 8:
+                self.jogadores = self.definir_jogadores(lista_jogadores, numero_jogadores_artificiais)
+                break
+            else:
+                print(f"Quantidade Inválida! O limite é de 8 jogadores e já temos {jogadores_reais}")
+                continue
+
+
 if __name__ == "__main__":
     jogo = Jogo()
     jogo.jogar()
-
