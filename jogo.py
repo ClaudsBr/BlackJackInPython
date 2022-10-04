@@ -195,7 +195,8 @@ class Jogo:
                 self.definir_vencedor()
 
             elif pergunta[0].lower() == 'n':
-                print("FIM DO JOGO")
+                print()
+                print("======== FIM DO JOGO ========")
                 self.saldo()
                 break
             else:
@@ -224,7 +225,7 @@ class Jogo:
                 #lista_jogadores = [input("Digite seu nome:\n") for i in range(jogadores_reais)]
                 lista_jogadores = []
                 for indice, i in enumerate(range(jogadores_reais)):
-                    nome = input(f'Digite o nome do {indice + 1}º jogador')
+                    nome = input(f'Digite o nome do {indice + 1}º jogador\n')
                     lista_jogadores.append(nome)
                 break
             else:

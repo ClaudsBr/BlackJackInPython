@@ -1,6 +1,7 @@
 import time
 from baralho import Baralho
 from jogador import Jogador
+import random
 
 import random
 import itertools
@@ -32,7 +33,6 @@ lista = [1,2,3,4]
 buffer = itertools.cycle(lista)
 for i in buffer:
     print(i)'''
-
 
 
 
