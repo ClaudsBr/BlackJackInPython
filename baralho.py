@@ -1,18 +1,16 @@
 import random
+from constantes import PAUS, COPAS, OUROS, ESPADAS, REI, AS, DAMA, VALETE
 from jogador import Jogador
 from uuid import uuid4
-import emoji
+
 
 class Baralho():
 
     def __init__(self):
 
         self.cartas = []
-        paus = emoji.emojize(":club_suit:")
-        copas = emoji.emojize(":heart_suit:")
-        espadas = emoji.emojize(":spade_suit:")
-        ouros = emoji.emojize(":diamond_suit:")
-        for naipe in [paus, copas, espadas, ouros]:
+
+        for naipe in [PAUS, COPAS, ESPADAS, OUROS]:
             for numero in range(2, 11):
                 carta = {
                     "naipe": naipe,
@@ -22,7 +20,7 @@ class Baralho():
                 }
                 self.cartas.append(carta)
 
-            for numero in ["A", "Q", "J", "K"]:
+            for numero in [AS, DAMA, VALETE, REI]:
                 carta = {
                     "naipe": naipe,
                     "numero": numero,
@@ -52,22 +50,22 @@ class Baralho():
         soma = 0
         valores = []
         for carta in cartas:
-            if (carta["numero"] == "K") \
-                    or (carta["numero"] == "Q") \
-                    or (carta["numero"] == "J"):
+            if (carta["numero"] == REI) \
+                    or (carta["numero"] == DAMA) \
+                    or (carta["numero"] == VALETE):
                 soma += 10
                 valores.append(carta['numero'])
-            elif(carta["numero"]== "A"):
-                soma +=1
+            elif carta["numero"] == AS:
+                soma += 1
                 valores.append(carta['numero'])
             else:
                 soma += int(carta['numero'])
                 valores.append(int(carta['numero']))
 
-        if "A" in valores:
-            if ("K" in valores) \
-                    or ("Q" in valores) \
-                    or ("J" in valores):
+        if AS in valores:
+            if (REI in valores) \
+                    or (DAMA in valores) \
+                    or (VALETE in valores):
                 soma += 10
                 if soma > 21:
                     soma -= 10
@@ -76,5 +74,3 @@ class Baralho():
     def exibir_cartas(self):
         for carta in self.cartas:
             print(f"{carta['numero']} {carta['naipe']}")
-
-

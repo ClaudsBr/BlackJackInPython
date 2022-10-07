@@ -2,6 +2,7 @@ from jogador import Jogador
 from faker import Faker
 import random
 
+
 class JogadorIA(Jogador):
 
     def __init__(self, ):
@@ -9,15 +10,16 @@ class JogadorIA(Jogador):
         self.tendencia = random.choice([1, 2, 3])
 
     def apostando(self):
-        valores_aposta = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000]
+        valores_aposta = [
+            100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000
+        ]
         aposta = random.choice(valores_aposta)
-        while aposta > self.saldo:
-            aposta = random.choice(valores_aposta)
+        if aposta > self.__saldo__:
+            aposta = self.__saldo__
 
-        self.saldo -= aposta
+        self.__saldo__ -= aposta
         self.aposta = aposta
         return aposta
-
 
     def jogando(self):
         if self.pontuacao < 15 + self.tendencia:

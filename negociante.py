@@ -1,6 +1,6 @@
-import random
 from config import SALDO_INICIAL_DEALER
 from jogador import Jogador
+
 
 class Negociante(Jogador):
 
@@ -18,5 +18,5 @@ class Negociante(Jogador):
         else:
             return 'm'
 
-
-
+    def negociante_perde(self, jogador: Jogador):
+        self.__saldo__ -= 2 * jogador.aposta
