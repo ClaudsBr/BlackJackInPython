@@ -177,7 +177,7 @@ class Jogo:
             self.iniciar_nova_rodada()
             pergunta = input(f"Deseja continuar no jogo "
                              f"{self.jogadores[0].nome}? "
-                             f"[S - SIM\n"
+                             f"\nS - SIM\n"
                              f"N - NÃO\n")
 
             if pergunta[0].lower() == 's':
