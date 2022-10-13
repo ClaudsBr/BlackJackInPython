@@ -30,6 +30,7 @@ class Jogo:
                 ((jogador.pontuacao <= 21) and
                  (jogador.pontuacao > negociante.pontuacao)):
             jogador.jogador_ganha(jogador.aposta)
+            negociante.negociante_perde(jogador)
             self.ganhadores.append(jogador)
         elif jogador.pontuacao <= 21 and \
                 jogador.pontuacao == negociante.pontuacao:
@@ -59,7 +60,8 @@ class Jogo:
             if perdedor.nome == "Dealer":
                 break
             print(perdedor.nome)
-        print()
+        else:
+            print()
 
     def mostrar_empatados(self):
         if len(self.empatados) == 0:
@@ -170,46 +172,48 @@ class Jogo:
         self.perdedores.clear()
         self.empatados.clear()
 
+    def continuar(self):
+        for jogador in self.jogadores:
+            pergunta = jogador.continuando()
+            if pergunta.lower() == 's':
+                print(f'O jogador {jogador.nome} vai continuar no jogo')
+            else:
+                jogador.desativar()
+                self.jogadores.remove(jogador)
+                self.sair_do_jogo(jogador)
+
+    def jogadores_reais_ativos(self):
+        if type(self.jogadores[0]) == Jogador:
+            self.nova_rodada()
+        else:
+            self.fim_de_jogo()
+
+    def fim_de_jogo(self):
+        print("Obrigado por Jogar o BlackJack!!!")
+
     def nova_rodada(self):
 
         while True:
-            self.devolver_as_cartas()
+
             self.iniciar_nova_rodada()
-            pergunta = input(f"Deseja continuar no jogo "
-                             f"{self.jogadores[0].nome}? "
-                             f"\nS - SIM\n"
-                             f"N - NÃO\n")
+            self.definir_as_cartas_do_jogo()
 
-            if pergunta[0].lower() == 's':
-                self.definir_as_cartas_do_jogo()
-                for jogador in self.jogadores:
-                    self.apostar(jogador)
-                    self.mostrar_cartas_do_jogador(jogador)
-                    self.calcular_pontuacao(jogador)
-                    self.pedir_ou_manter(jogador)
-                self.mostrar_todas_as_cartas()
-                self.definir_vencedor_da_rodada()
+            for jogador in self.jogadores:
 
-            elif pergunta[0].lower() == 'n':
-                self.sair_do_jogo(self.jogadores[0])
-
-                if type(self.jogadores[0]) is JogadorIA:
-                    print("======== FIM DO JOGO ========")
-                    print("Volte Sempre ao BlackJack!!!")
-                    break
-                else:
-                    continue
-                print()
-
-                break
-            else:
-                print("resposta incorreta, digite S para continuar "
-                      "ou N para sair do jogo")
-                continue
+                self.apostar(jogador)
+                self.mostrar_cartas_do_jogador(jogador)
+                self.calcular_pontuacao(jogador)
+                self.pedir_ou_manter(jogador)
+            self.mostrar_todas_as_cartas()
+            self.definir_vencedor_da_rodada()
+            self.continuar()
+            self.jogadores_reais_ativos()
+            break
 
     def sair_do_jogo(self, jogador: Jogador):
-        jogador = self.jogadores.pop(0)
-        print(f"O jogador {jogador.nome} optou por sair do jogo\n"
+
+        print(
+            f"O jogador {jogador.nome} saiu do jogo\n"
               )
 
     def jogar(self):
@@ -223,7 +227,8 @@ class Jogo:
             self.pedir_ou_manter(jogador)
         self.mostrar_todas_as_cartas()
         self.definir_vencedor_da_rodada()
-        self.nova_rodada()
+        self.continuar()
+        self.jogadores_reais_ativos()
 
     def introducao(self):
         print(emoji.emojize(":club_suit::heart_suit:"

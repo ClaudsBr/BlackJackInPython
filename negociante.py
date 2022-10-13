@@ -19,4 +19,13 @@ class Negociante(Jogador):
             return 'm'
 
     def negociante_perde(self, jogador: Jogador):
-        self.__saldo__ -= 2 * jogador.aposta
+        self.set_saldo(self.get_saldo() - (2* jogador.aposta))
+
+    def continuando(self):
+        if self.get_saldo() == 0:
+            print(f"Quebrou a banca!!!")
+            return 'n'
+        else:
+            return 's'
+
+

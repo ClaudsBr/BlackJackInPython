@@ -14,10 +14,10 @@ class JogadorIA(Jogador):
             100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000
         ]
         aposta = random.choice(valores_aposta)
-        if aposta > self.__saldo__:
-            aposta = self.__saldo__
+        if aposta > self.get_saldo():
+            aposta = self.get_saldo()
 
-        self.__saldo__ -= aposta
+        self.set_saldo(self.get_saldo() - aposta)
         self.aposta = aposta
         return aposta
 
@@ -26,3 +26,11 @@ class JogadorIA(Jogador):
             return 'p'
         else:
             return 'm'
+
+    def continuando(self):
+
+        if self.get_saldo() == 0:
+            print(f"Fim de jogo para o jogador {self.nome} que está sem saldo")
+            return 'n'
+        else:
+            return 's'

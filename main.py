@@ -34,3 +34,6 @@ buffer = itertools.cycle(lista)
 for i in buffer:
     print(i)'''
 
+
+
+
