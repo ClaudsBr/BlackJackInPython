@@ -2,6 +2,7 @@ from time import sleep
 import emoji
 
 from baralho import Baralho
+from constantes import VERMELHO, AZUL, VERDE, AMARELO, BRANCO
 from negociante import Negociante
 from jogador import Jogador
 from jogador_ia import JogadorIA
@@ -64,6 +65,7 @@ class Jogo:
             print()
 
     def mostrar_empatados(self):
+        print()
         if len(self.empatados) == 0:
             print("Ninguém empatou com o Dealer")
         else:
@@ -83,13 +85,15 @@ class Jogo:
         jogadores = []
         for i, nome in enumerate(jogadores_reais):
             jogadores.append(Jogador(nome))
-            print(f'Jogador real de nome {jogadores[i].nome} '
-                  f'e id: {jogadores[i].id[:5]} criado com sucesso!')
+            print(f'{AZUL}Jogador real de nome {jogadores[i].nome} '
+                  f'e id: {jogadores[i].id[:5]} criado com sucesso!{BRANCO}')
 
         for i in range(numero_jogadores_artificiais):
             jogador_artificial = JogadorIA()
-            print(f'Jogador artificial de nome {jogador_artificial.nome} '
-                  f'e id: {jogador_artificial.id[:5]} criado com sucesso!')
+            print(f'{AZUL}Jogador artificial de nome '
+                  f'{jogador_artificial.nome} '
+                  f'e id: {jogador_artificial.id[:5]} '
+                  f'criado com sucesso!{BRANCO}')
             jogadores.append(jogador_artificial)
 
         negociante = Negociante()
@@ -114,7 +118,8 @@ class Jogo:
                 self.mostrar_cartas_do_jogador(jogador)
                 if jogador.pontuacao > 21:
                     self.perdedores.append(jogador)
-                    print(f"{jogador.nome} ESTOUROU e PERDEU "
+                    print(f"{VERMELHO}{jogador.nome} ESTOUROU e "
+                          f"PERDEU {BRANCO}"
                           f"{self.aposta[jogador.id]}!"
                           f"\nPontuação: {jogador.pontuacao} pontos"
                           )
@@ -133,7 +138,7 @@ class Jogo:
 
     def mostrar_todas_as_cartas(self):
         sleep(1)
-        print("--- RESULTADO FINAL ----")
+        print(f"{AMARELO}--- RESULTADO FINAL ----{BRANCO}")
         sleep(0.5)
         for jogador in self.jogadores:
             print("Jogador:", jogador.nome)
@@ -176,7 +181,8 @@ class Jogo:
         for jogador in self.jogadores:
             pergunta = jogador.continuando()
             if pergunta.lower() == 's':
-                print(f'O jogador {jogador.nome} vai continuar no jogo')
+                print(f'{AZUL}O jogador {jogador.nome} '
+                      f'vai continuar no jogo{BRANCO}')
             else:
                 jogador.desativar()
                 self.jogadores.remove(jogador)
@@ -189,7 +195,8 @@ class Jogo:
             self.fim_de_jogo()
 
     def fim_de_jogo(self):
-        print("Obrigado por Jogar o BlackJack!!!")
+        print(f'\n{VERMELHO}========= FIM DE JOGO =========')
+        print(f"{VERDE}Obrigado por Jogar o BlackJack!!!")
 
     def nova_rodada(self):
 
@@ -213,7 +220,7 @@ class Jogo:
     def sair_do_jogo(self, jogador: Jogador):
 
         print(
-            f"O jogador {jogador.nome} saiu do jogo\n"
+            f"{VERMELHO}O jogador {jogador.nome} saiu do jogo{BRANCO}\n"
               )
 
     def jogar(self):
@@ -232,7 +239,7 @@ class Jogo:
 
     def introducao(self):
         print(emoji.emojize(":club_suit::heart_suit:"
-                            "Bem-vindo ao BlackJack!  "
+                            f"{AMARELO}Bem-vindo ao BlackJack!{BRANCO}  "
                             ":spade_suit::diamond_suit:"))
 
         while True:

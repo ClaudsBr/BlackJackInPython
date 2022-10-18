@@ -1,6 +1,8 @@
 from config import SALDO_INICIAL_JOGADOR
 from uuid import uuid4
 from faker import Faker
+
+from constantes import VERMELHO, BRANCO
 from log import logger
 
 
@@ -28,7 +30,6 @@ class Jogador:
         string_de_retorno += f'Mão: {self.pontuacao}\nSaldo: {self.__saldo}'
 
         return string_de_retorno
-
 
     def jogando(self):
         pergunta = input("Digite:\n"
@@ -60,16 +61,18 @@ class Jogador:
     def continuando(self):
         while True:
             if self.__saldo == 0:
-                print(f"Fim de jogo para o jogador {self.nome} que está sem saldo")
+                print(f"{VERMELHO}Fim de jogo para o jogador {self.nome} "
+                      f"que está sem saldo{BRANCO}")
                 return 'n'
 
-            resposta = input(f"Deseja continuar no jogo {self.nome}? \nS - SIM\nN - NÃO\n")
+            resposta = input(f"Deseja continuar no jogo {self.nome}? \n"
+                             f"S - SIM\nN - NÃO\n")
             if resposta.lower() == 's':
                 return 's'
             elif resposta.lower() == 'n':
                 return 'n'
             else:
-                print("Resposta Inválida")
+                print(f"{VERMELHO}Resposta Inválida{BRANCO}")
                 continue
 
     def desativar(self):
