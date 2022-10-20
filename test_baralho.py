@@ -1,5 +1,7 @@
+import emoji
+
 from baralho import Baralho
-from player import Player
+from jogador import Jogador
 import unittest
 from unittest.mock import patch, MagicMock
 import random
@@ -11,63 +13,62 @@ class TestBaralho(unittest.TestCase):
         random.seed(10)
         self.baralho = Baralho()
 
-    def test_somar_pontos_numeros(self):
+    def test_metodo_somar_pontos_usando_apenas_numeros(self):
         cartas = [
 
-            {"naipe": "Ouros", "numero": "8", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "8", "jogador": None,
              "id": "a56699ba-bfe7-4346-a830-9998d13a2ad3"},
-            {"naipe": "Copas", "numero": "2", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "2", "jogador": None,
              "id": "e4d9c608-6019-4ef5-9258-4dc8276f6cc8"},
-            {"naipe": "Espadas", "numero": "9", "jogador": None,
+            {"naipe": emoji.emojize(":spade_suit:"), "numero": "9", "jogador": None,
              "id": "5f036d20-9534-47e1-9d6d-4424cb9298d4"},
 
         ]
         pontos = self.baralho.somar_pontos(cartas)
         self.assertEqual(pontos, 19)
 
-    def test_somar_pontos_figuras(self):
+    def test_somar_pontos_usando_as_figuras(self):
         cartas = [
-            {"naipe": "Copas", "numero": "Rei", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "K", "jogador": None,
              "id": "3fa5abe8-e948-42ee-a2c8-d72235a5df8f"},
-            {"naipe": "Espadas", "numero": "Valete", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "J", "jogador": None,
              "id": "eeb5f5ad-083b-46a0-9b5f-ff63eec12940"}
         ]
-
         pontos = self.baralho.somar_pontos(cartas)
         self.assertEqual(pontos, 20)
 
     def test_somar_pontos_com_as(self):
         cartas = [
-            {"naipe": "Ouros", "numero": "8", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "8", "jogador": None,
              "id": "a56699ba-bfe7-4346-a830-9998d13a2ad3"},
-            {"naipe": "Espadas", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":spade_suit:"), "numero": "A", "jogador": None,
              "id": "bebb9f09-19ae-46a0-8bab-0bcaa543f4c4"},
-            {"naipe": "Copas", "numero": "Rei", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "K", "jogador": None,
              "id": "3fa5abe8-e948-42ee-a2c8-d72235a5df8f"},
-            {"naipe": "Ouros", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "A", "jogador": None,
              "id": "32601ad5-a8c4-462e-811f-eed2914f105f"}
         ]
         pontos = self.baralho.somar_pontos(cartas)
         self.assertEqual(pontos, 20)
 
-    def test_somar_pontos_21_valete(self):
+    def test_somar_pontos_21_com_o_valete(self):
         cartas = [
 
-            {"naipe": "Ouros", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "A", "jogador": None,
              "id": "32601ad5-a8c4-462e-811f-eed2914f105f"},
-            {"naipe": "Espadas", "numero": "Valete", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "J", "jogador": None,
              "id": "eeb5f5ad-083b-46a0-9b5f-ff63eec12940"},
 
         ]
         pontos = self.baralho.somar_pontos(cartas)
         self.assertEqual(pontos, 21)
 
-    def test_somar_pontos_21_rei(self):
+    def test_somar_pontos_21_com_o_rei(self):
         cartas = [
 
-            {"naipe": "Ouros", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "A", "jogador": None,
              "id": "32601ad5-a8c4-462e-811f-eed2914f105f"},
-            {"naipe": "Copas", "numero": "Rei", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "K", "jogador": None,
              "id": "3fa5abe8-e948-42ee-a2c8-d72235a5df8f"},
 
         ]
@@ -77,13 +78,12 @@ class TestBaralho(unittest.TestCase):
     def test_somar_pontos_22(self):
         cartas = [
 
-            {"naipe": "Ouros", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "A", "jogador": None,
              "id": "32601ad5-a8c4-462e-811f-eed2914f105f"},
-            {"naipe": "Copas", "numero": "Rei", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "K", "jogador": None,
              "id": "3fa5abe8-e948-42ee-a2c8-d72235a5df8f"},
-            {"naipe": "Paus", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":club_suit:"), "numero": "A", "jogador": None,
              "id": "32601ad5-a8c4-462e-811f-eed2914f105f"},
-
         ]
         pontos = self.baralho.somar_pontos(cartas)
         resposta = pontos == 22
@@ -92,83 +92,82 @@ class TestBaralho(unittest.TestCase):
     def test_somar_pontos_21_dama(self):
         cartas = [
 
-            {"naipe": "Ouros", "numero": "1", "jogador": None,
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "A", "jogador": None,
              "id": "32601ad5-a8c4-462e-811f-eed2914f105f"},
-            {"naipe": "Copas", "numero": "Dama", "jogador": None,
+            {"naipe": emoji.emojize(":heart_suit:"), "numero": "Q", "jogador": None,
              "id": "0b2a08d4-216a-412b-b02f-284493adf47d"},
-
         ]
         pontos = self.baralho.somar_pontos(cartas)
         self.assertEqual(pontos, 21)
 
-    def test_naipe_paus(self):
+    def test_se_o_baralho_tem_o_naipe_de_paus(self):
         achar_paus = False
         for carta in self.baralho.cartas:
-            if carta['naipe'] == "Paus":
+            if carta['naipe'] == emoji.emojize(":club_suit:"):
                 achar_paus = True
 
         self.assertTrue(achar_paus)
 
-    def test_naipe_copas(self):
+    def test_se_o_baralho_tem_o_naipe_de_copas(self):
         achar_copas = False
         for carta in self.baralho.cartas:
-            if carta['naipe'] == "Copas":
+            if carta['naipe'] == emoji.emojize(":heart_suit:"):
                 achar_copas = True
 
         self.assertTrue(achar_copas)
 
-    def test_naipe_espadas(self):
+    def test_se_o_baralho_tem_o_naipe_de_espadas(self):
         achar_espadas = False
         for carta in self.baralho.cartas:
-            if carta['naipe'] == "Espadas":
+            if carta['naipe'] == emoji.emojize(":spade_suit:"):
                 achar_espadas = True
 
         self.assertTrue(achar_espadas)
 
-    def test_naipe_ouros(self):
+    def test_se_o_baralho_tem_o_naipe_de_ouros(self):
         achar_ouros = False
         for carta in self.baralho.cartas:
-            if carta['naipe'] == "Ouros":
+            if carta['naipe'] == emoji.emojize(":diamond_suit:"):
                 achar_ouros = True
 
         self.assertTrue(achar_ouros)
 
-    def test_quantidade_cartas(self):
+    def test_quantidade_cartas_do_baralho(self):
         tamanho = len(self.baralho.cartas)
         self.assertEqual(tamanho, 52)
 
-    def test_valor_rei(self):
+    def test_se_tem_rei_no_baralho(self):
         achar_rei = False
         for carta in self.baralho.cartas:
-            if carta["numero"] == "Rei":
+            if carta["numero"] == "K":
                 achar_rei = True
 
         self.assertTrue(achar_rei)
 
-    def test_valor_dama(self):
+    def test_se_tem_dama_no_baralho(self):
         achar_dama = False
         for carta in self.baralho.cartas:
-            if carta["numero"] == "Dama":
+            if carta["numero"] == "Q":
                 achar_dama = True
         self.assertTrue(achar_dama)
 
-    def test_valor_valete(self):
+    def test_se_tem_valete_no_baralho(self):
         achar_valete = False
         for carta in self.baralho.cartas:
-            if carta['numero'] == "Valete":
+            if carta['numero'] == "J":
                 achar_valete = True
         self.assertTrue(achar_valete)
 
-    def test_nome_jogador_na_carta(self):
-        jogador = Player()
+    def test_se_o_jogador_recebe_carta_do_baralho(self):
+        jogador = Jogador()
         cartas = self.baralho.dar_as_cartas(jogador)
-        self.assertEqual(jogador.cards, cartas)
+        self.assertEqual(jogador.cartas, cartas)
 
-    def test_chave_jogador(self):
+    def test_da_chave_jogador_nas_cartas_do_baralho(self):
         achar_jogador = False
-        jogador = Player()
+        jogador = Jogador()
         carta = self.baralho.pedir_carta(jogador)
-        if carta['jogador'] == jogador.name:
+        if carta['jogador'] == jogador.nome:
             achar_jogador = True
 
         self.assertTrue(achar_jogador)
@@ -184,39 +183,40 @@ class TestBaralho(unittest.TestCase):
         self.assertTrue(flag)
 
     @patch("baralho.Baralho.pedir_carta")
-    def test_dar_as_cartas(self, pedir_carta_mock: MagicMock):
-        jogador = Player()
+    def test_metodo_dar_as_cartas(self, pedir_carta_mock: MagicMock):
+        jogador = Jogador()
         pedir_carta_mock.side_effect = [
-            {"naipe": "Ouros", "numero": "Valete", "jogador": jogador.name},
-            {"naipe": "Paus", "numero": "Valete", "jogador": jogador.name},
+            {"naipe": emoji.emojize(":diamond_suit:"), "numero": "J", "jogador": jogador.nome},
+            {"naipe": emoji.emojize(":club_suit:"), "numero": "J", "jogador": jogador.nome},
         ]
         resposta = self.baralho.dar_as_cartas(jogador)
         print(resposta)
 
     @patch("baralho.Baralho.pedir_carta", MagicMock(side_effect=[
-        {"naipe": "Ouros", "numero": "Valete", "jogador": "Claudio"},
-        {"naipe": "Paus", "numero": "Valete", "jogador": "Claudio"},
+        {"naipe": emoji.emojize(":diamond_suit:"), "numero": "J", "jogador": "Claudio"},
+        {"naipe": emoji.emojize(":club_suit:"), "numero": "J", "jogador": "Claudio"},
     ]))
-    def test_dar_as_cartas2(self):
-        jogador = Player("Claudio")
+    def test_dar_as_cartas(self):
+        jogador = Jogador("Claudio")
         resposta = self.baralho.dar_as_cartas(jogador)
         print(resposta)
 
     @patch("baralho.Baralho.pedir_carta")
     def test_dar_as_cartas3(self, pedir_carta_mock: MagicMock):
-        jogador = Player()
-        pedir_carta_mock.return_value = {"naipe": "Ouros", "numero": "Valete",
-                                         "jogador": jogador.name}
+        jogador = Jogador()
+        pedir_carta_mock.return_value = {"naipe": emoji.emojize(":diamond_suit:"), "numero": "J",
+                                         "jogador": jogador.nome}
         resposta = self.baralho.dar_as_cartas(jogador)
         resposta2 = self.baralho.pedir_carta(jogador)
         resposta3 = self.baralho.pedir_carta(jogador)
         print(resposta, resposta2, resposta3)
 
-    def test_mostrar_cartas(self):
+    def test_metodo_mostrar_cartas(self):
         print(self.baralho.cartas)
 
-    def test_pedir_carta(self):
-        jogador = Player()
+    def test_metodo_pedir_carta(self):
+        jogador = Jogador()
         resposta = self.baralho.pedir_carta(jogador)
         print(resposta)
+
 
